@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mi Nivel Ideal - Póker Cash</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: url('https://images.unsplash.com/photo-1568772583403-4b8d8c48ecdb?auto=format&fit=crop&w=1400&q=80') no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+    }
+
+    .overlay {
+      background: rgba(0, 0, 0, 0.75);
+      min-height: 100vh;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      text-align: center;
+      margin-bottom: 10px;
+      color: #00ffb3;
+    }
+
+    p.sub {
+      text-align: center;
+      color: #ccc;
+      margin-bottom: 40px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      padding: 30px;
+      border-radius: 15px;
+      width: 100%;
+      max-width: 500px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.4);
+    }
+
+    label {
+      display: block;
+      margin-top: 20px;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    select, input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      font-size: 1rem;
+      background-color: #222;
+      color: white;
+    }
+
+    button {
+      margin-top: 30px;
+      width: 100%;
+      padding: 15px;
+      font-size: 1.2rem;
+      background: linear-gradient(45deg, #00ffb3, #0077ff);
+      border: none;
+      border-radius: 10px;
+      color: black;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    button:hover {
+      transform: scale(1.03);
+      box-shadow: 0 5px 15px rgba(0, 255, 179, 0.4);
+    }
+
+    .resultado {
+      margin-top: 30px;
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+      background: #1e1e1e;
+      animation: fadeIn 0.6s ease-in-out;
+      font-size: 1.2rem;
+      border: 1px solid #00ffb3;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay">
+    <h1>Mi Nivel Ideal en Póker Cash</h1>
+    <p class="sub">Descubre en qué niveles deberías estar jugando realmente 💡</p>
+
+    <div class="card">
+      <form id="formulario">
+        <label for="experiencia">Años de experiencia:</label>
+        <select id="experiencia" required>
+          <option value="" disabled selected>Selecciona una opción</option>
+          <option value="0">0 años (novato)</option>
+          <option value="1">1 año</option>
+          <option value="2">2 años</option>
+          <option value="3">3 años</option>
+          <option value="4">4 años</option>
+          <option value="5">5 años</option>
+          <option value="6">6 años o más</option>
+        </select>
+
+        <label for="bankroll">Bankroll actual (€):</label>
+        <input type="number" id="bankroll" required min="0">
+
+        <label for="manos">Manos jugadas al mes:</label>
+        <select id="manos" required>
+          <option value="" disabled selected>Selecciona una opción</option>
+          <option value="1">Menos de 5.000</option>
+          <option value="2">5.000 - 20.000</option>
+          <option value="3">20.000 - 50.000</option>
+          <option value="4">Más de 50.000</option>
+        </select>
+
+        <button type="submit">Calcular nivel</button>
+      </form>
+
+      <div class="resultado" id="resultado" style="display:none;"></div>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById("formulario");
+    const resultado = document.getElementById("resultado");
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const experiencia = parseInt(document.getElementById("experiencia").value);
+      const bankroll = parseInt(document.getElementById("bankroll").value);
+      const manos = parseInt(document.getElementById("manos").value);
+
+      let nivel = "";
+
+      if (experiencia <= 1 || manos === 1 || bankroll < 100) {
+        nivel = "Microlímites (NL2 - NL5)";
+      } else if ((experiencia <= 3 && manos <= 2) || bankroll < 500) {
+        nivel = "Bajos límites (NL10 - NL25)";
+      } else if (experiencia >= 3 && bankroll >= 1000 && manos >= 3) {
+        nivel = "Medios límites (NL50 - NL100)";
+      } else if (experiencia >= 5 && bankroll >= 3000 && manos === 4) {
+        nivel = "Altos límites (NL200+)";
+      } else {
+        nivel = "Intermedios. Ajusta según winrate y confianza.";
+      }
+
+      resultado.style.display = "block";
+      resultado.innerHTML = `🎯 <strong>Tu nivel ideal es:</strong> ${nivel}`;
+    });
+  </script>
+</body>
+</html>
